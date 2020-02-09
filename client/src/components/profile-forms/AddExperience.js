@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { AddExperience } from '../../action/profile';
 import { Fragment } from 'react';
 
-const AddExperience = props => {
+const AddExperience = ({ addExperience, history }) => {
   const [formData, setFormData] = useState({
     company: '',
     title: '',
