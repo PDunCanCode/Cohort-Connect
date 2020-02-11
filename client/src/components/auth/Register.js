@@ -88,7 +88,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     </Fragment>
   );
 };
-Register.proptypes = {
+Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
