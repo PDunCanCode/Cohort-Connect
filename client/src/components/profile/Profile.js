@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
+import ProfileAbout from './ProfileAbout';
+import ProfileTop from './ProfileTop';
+
 import { getProfileById } from '../../actions/profile';
 
 const Profile = ({
@@ -13,7 +16,7 @@ const Profile = ({
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
-  }, [getProfileById]);
+  }, [getProfileById, match.params.id]);
   return (
     <Fragment>
       {profile === null || loading ? (
@@ -26,6 +29,25 @@ const Profile = ({
             auth.user._id === profile.user._id && (
               <Link to='/edit-profile'></Link>
             )}
+          <div className='profile-grid my-1'>
+            <ProfileTop profile={profile} />
+            <ProfileAbout profile={profile} />
+            <div className='profile-exp bg-white p-2'>
+              <h2 className='text-primary'>Experience</h2>
+              {profile.experience.length > 0 ? (
+                <Fragment>
+                  {profile.experience.map(experience => (
+                    <ProfileExperience
+                      key={experience._id}
+                      experience={experience}
+                    />
+                  ))}
+                </Fragment>
+              ) : (
+                <h4>No experience credentials</h4>
+              )}
+            </div>
+          </div>
         </Fragment>
       )}
     </Fragment>
