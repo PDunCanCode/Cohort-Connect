@@ -1,18 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
-// @route GET api/auth
-//@access Public
 
+// @route    GET api/auth
+// @desc     Get user by token
+// @access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await user.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -20,10 +21,9 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route POST api/auth
-// @desc Auth user & get token
-// @access Public
-
+// @route    POST api/auth
+// @desc     Authenticate user & get token
+// @access   Public
 router.post(
   '/',
   [
@@ -48,6 +48,7 @@ router.post(
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
+
       if (!isMatch) {
         return res
           .status(400)
@@ -71,7 +72,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send('Server error');
     }
   }
 );
